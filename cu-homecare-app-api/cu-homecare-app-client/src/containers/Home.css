@@ -1,0 +1,98 @@
+.Home .lander {
+ padding: 80px 0;
+ text-align: center;
+}
+.Home .lander h1 {
+ font-family: "Open Sans", sans-serif;
+ font-weight: 600;
+}
+.Home .lander p {
+ color: #999;
+}
+.Home .notes h4 {
+ font-family: "Open Sans", sans-serif;
+ font-weight: 600;
+ overflow: hidden;
+ line-height: 1.5;
+ white-space: nowrap;
+ text-overflow: ellipsis;
+}
+.Home .notes p {
+ color: #666;
+}
+
+.Home .quick-data {
+  margin: auto;
+  text-align: center;
+  /* border: 3px solid green; */
+  width: 95%;
+}
+
+.Home .dataLeft {
+ float: left;
+}
+
+.Home .dataRight {
+  float: right;
+}
+
+.Home .dataList {
+ list-style: none;
+ float: left;
+ font-size: large;
+}
+
+.react-sanfona {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 70px;
+}
+
+.react-sanfona-item-title {
+  background-color: #fafafa;
+  border-top: 1px solid #ccc;
+  color: #333;
+  padding: 20px;
+  /* text-transform: uppercase; */
+  transition: background-color .3s;
+  border-radius: 8px;
+}
+
+.react-sanfona-item:first-child .react-sanfona-item-title {
+  border-top: none;
+}
+
+.react-sanfona-item-expanded .react-sanfona-item-title {
+  background-color: #27586B;
+  color: #ffffff;
+
+  .title-done-btn {
+      display: inline-block;
+      float: right;
+      color: #000;
+  }
+}
+
+.react-sanfona-item-body-wrapper {
+  color: #666;
+  padding: 20px;
+  position: relative;
+}
+
+.react-sanfona-item-body-wrapper:hover .tooltip {
+  opacity: 1;
+}
+
+.main {
+  margin-top: -1em;
+  text-align: center;
+  color: #2D4C72;
+}
+
+.accordion {
+  text-align: left;
+}
+
+.lander{
+  color: white;
+}

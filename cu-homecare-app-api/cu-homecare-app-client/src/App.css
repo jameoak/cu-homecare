@@ -1,0 +1,32 @@
+.App {
+    margin-top: 15px;
+    background-color: #B7CEDF;
+    border-radius: 25px;
+}
+.App .navbar-brand {
+    /* margin-top: 1em; */
+    font-weight: bold;
+}
+
+.App .navbar-header {
+    /* margin-top: 1em; */
+}
+
+.navbar {
+  margin-top: 1em;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* width: 50%; */
+}
+
+.brand {
+  font-size: large;
+}
+
+.pullRight {
+  color: white;
+}
