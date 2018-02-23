@@ -9,7 +9,6 @@ export default class Home extends Component {
 
  constructor(props) {
    super(props);
-   console.log(props);
    this.state = {
      isLoading: true,
      notes: [],
@@ -24,9 +23,6 @@ export default class Home extends Component {
  // }
 
  getChartData(notes){
-   console.log("NotePost1")
-   console.log(notes)
-
 
    this.setState({
      chartData:{
@@ -67,7 +63,8 @@ export default class Home extends Component {
  }
 
  renderNotesList(notes, username) {
-
+   console.log(notes);
+   console.log("renderNoteList");
    return (
      <div>
        <h4>
@@ -95,7 +92,9 @@ export default class Home extends Component {
    );
  }
 
- renderNotes() {
+ renderNotes(notes) {
+   console.log("renderNotes");
+   console.log(notes);
    return (
      <div className="notes">
        <PageHeader>Your Data</PageHeader>
@@ -107,10 +106,10 @@ export default class Home extends Component {
  }
 
  render() {
-
+   console.log("render");
    return (
      <div className="Home">
-       {this.props.isAuthenticated ? this.renderNotes() : this.renderLander()}
+       {this.props.isAuthenticated ? this.renderNotes(this.state.notes) : this.renderLander()}
      </div>
    );
  }
@@ -124,13 +123,12 @@ export default class Home extends Component {
      const results = await this.notes();
      this.setState({ notes: results });
      this.getChartData(this.state.notes);
+     console.log("mount");
      if(this.props.username === ""){
-       console.log(localStorage);
        this.setState({ username: localStorage.getItem('username')});
      } else {
        this.setState({ username: this.props.username});
        localStorage.setItem('username', this.props.username);
-       console.log(localStorage);
      }
 
    } catch (e) {

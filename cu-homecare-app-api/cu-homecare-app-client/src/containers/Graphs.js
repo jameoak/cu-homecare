@@ -4,7 +4,7 @@ import "./Home.css";
 import { invokeApig } from '../libs/awsLib';
 
 //import {BarChart} from 'react-easy-chart';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 //import LineChart from 'react-linechart';
 
 

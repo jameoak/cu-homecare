@@ -6,7 +6,7 @@ import Routes from "./Routes";
 import "./App.css";
 import { authUser, signOutUser } from "./libs/awsLib";
 import logo from './CU_HomeCare.png';
-import Chart from './components/Chart.js'
+//import Chart from './components/Chart.js'
 
 class App extends Component {
   constructor(props) {

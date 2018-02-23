@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import "./Home.css";
 import { invokeApig } from '../libs/awsLib';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import Chart from '../components/Chart.js'
-
-
-// Hi Steve
-
+import moment from 'moment';
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: true,
-            notes: []
+            notes: [{
+              name: "",
+              createdAt: 0 // This allows us to render without waiting on the API
+            }]
         };
     }
 
@@ -23,9 +23,11 @@ export default class Home extends Component {
         if (!this.props.isAuthenticated) {
             return;
         }
+
         try {
-            const results = await this.notes();
-            this.setState({ notes: results });
+
+          const results = await this.notes();
+          this.setState({ notes: results });
         } catch (e) {
             alert(e);
         }
@@ -36,6 +38,7 @@ export default class Home extends Component {
         return invokeApig({ path: "/notes" });  // EDITED SCP
     }
 
+    // This function can be deleted
     renderNotesList(notes) {
         return [{}].concat(notes).map(
             (note, i) =>
@@ -61,6 +64,7 @@ export default class Home extends Component {
         );
 
     }
+
     handleNoteClick = event => {
         event.preventDefault();
         this.props.history.push(event.currentTarget.getAttribute("href"));
@@ -75,9 +79,31 @@ export default class Home extends Component {
         );
     }
 
-    checkItem(item) {
+    // Find most recent index in table
+    findLatest(array){
+      let max = 0;
+      let index = 0;
+      for(var i=0; i<array.length; i++){
+        if(array[i].createdAt>max){
+          max = array[i].createdAt;
+          index = i;
+        }
+      }
+      return(index);
+
+    }
+
+    // Finds the number of minutes since time
+    fromCurrTime(time){
+      let difference = moment().valueOf() - time;
+      difference = difference/60000;
+      return(Math.ceil(difference));
+    }
+
+    checkItem(item, notes) {
       // const isLoggedIn = props.isLoggedIn;
-      if (item == "Graphs") {
+
+      if (item === "Graphs") {
         return (
           <div>
               <center> <b> Graphs: </b> View trends in your data. </center>
@@ -85,7 +111,23 @@ export default class Home extends Component {
           </div>
         );
       }
-      else if (item == "Data") {
+      else if (item === "Data") {
+        // Temperature
+        let indexTemp = this.findLatest(notes);
+        // Movement
+        let indexMov = this.findLatest(notes);
+        let diffMov = this.fromCurrTime(notes[indexMov].createdAt);
+        // Medication
+        let indexMed = this.findLatest(notes);
+        let diffMed = this.fromCurrTime(notes[indexMed].createdAt);
+        // Humidity
+        let indexHum = this.findLatest(notes);
+        // Open Door
+        let indexDoor = this.findLatest(notes);
+        let diffDoor = this.fromCurrTime(notes[indexDoor].createdAt);
+        // Smoke/Gas
+        // Not sure how to do this one
+
         return(
             <div className="quick-data">
                 <h4>
@@ -93,16 +135,17 @@ export default class Home extends Component {
                     <b> Quickly view important information. </b>
                   </center>
                 </h4> <br />
-                <p> <b> Temperature: </b>  68° </p>
-                <p> <b> Movement: </b> 27 minutes ago </p>
-                <p> <b> Medication: </b>  Taken 12 minutes ago </p>
-                <p> <b> Humidity: </b>  45% </p>
-                <p> <b> Open Door: </b>  1.5 hours ago </p>
+                <p> <b> Temperature: </b>  {notes[indexTemp].content + "°"} </p>
+                <p> <b> Movement: </b> {diffMov + " minutes ago"} </p>
+                <p> <b> Medication: </b>  {"Taken " + diffMed + " minutes ago"} </p>
+                <p> <b> Humidity: </b>  {notes[indexHum].content + "%"} </p>
+                <p> <b> Open Door: </b> { diffDoor + " hours ago"} </p>
                 <p> <b> Smoke/Gas: </b>  None detected </p>
             </div>
         )
+
       }
-      else if (item == "Sensor Status") {
+      else if (item === "Sensor Status") {
         return(
             <div className="quick-data">
                 <h4>
@@ -122,7 +165,7 @@ export default class Home extends Component {
       return <div />;
     }
 
-    renderAccordion() {
+    renderAccordion(notes) {
         return (
             <Accordion allowMultiple={true}>
                 {["Data", "Graphs",  "Sensor Status", "Settings"].map(item => {
@@ -130,7 +173,7 @@ export default class Home extends Component {
                         <AccordionItem title={`${item}`} expanded={item === 1}>
                             <div>
                               <ListGroupItem  key="new">
-                                {this.checkItem(item)}
+                                {this.checkItem(item, notes)}
                               </ListGroupItem>
                             </div>
                         </AccordionItem>
@@ -142,13 +185,13 @@ export default class Home extends Component {
 
 
 
-    renderOptions() {
+    renderOptions(notes) {
         return (
             <div className="main">
-            <PageHeader> Welcome John Smith </PageHeader>
+            <PageHeader> {"Welcome " + notes[0].name}</PageHeader>
             <ListGroup className="accordion">
                 {/* Load Accordion*/}
-                {this.renderAccordion()}
+                {this.renderAccordion(notes)}
 
                 {/* Load 'Graph' Button*/}
                 <ListGroupItem
@@ -165,12 +208,29 @@ export default class Home extends Component {
             </div>
         );
     }
+
     render() {
         return (
             <div className="Home">
-                {this.props.isAuthenticated ? this.renderOptions() :
+                {this.props.isAuthenticated ? this.renderOptions(this.state.notes) :
                 this.renderLander()}
             </div>
         );
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
